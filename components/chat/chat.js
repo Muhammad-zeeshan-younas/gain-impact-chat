@@ -108,7 +108,7 @@ function Chat({ channel, channels }) {
               type="submit"
               className="text-10px absolute right-0 flex h-full w-[140px] items-center justify-center rounded-xl bg-[#6588DE] text-white"
             >
-              Submit{" "}
+              Submit
               <span className="pl-2">
                 <PaperAirplaneIcon className="h-4 rotate-90 text-base" />
               </span>
