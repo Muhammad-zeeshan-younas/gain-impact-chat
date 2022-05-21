@@ -23,7 +23,7 @@ function Chat({ channel, channels }) {
 
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     if (router.query.channel) {
       onSnapshot(
@@ -40,6 +40,7 @@ function Chat({ channel, channels }) {
   }, [router.query]);
   const handleMessage = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
 
     await addDoc(collection(db, "channels", channel, "message"), {
       message,
@@ -52,14 +53,15 @@ function Chat({ channel, channels }) {
       recentActivity: serverTimestamp(),
     });
     setMessage("");
+    setIsLoading(false);
   };
 
   return (
     <>
       <div className=" w-full">
-        <div className="   h-[95vh] overflow-y-auto bg-[#FFFFFF] p-12">
-          <div className="grid w-full place-items-center p-5">
-            <div className=" flex h-[26px] w-[114px] items-center justify-center rounded-[14px] bg-[#6588DE] text-[12px] text-white ">
+        <div className="   h-[94vh] overflow-y-auto bg-[#FAFAFA] flex p-12 space-y-10 flex-col justify-end ">
+          <div className=" w-full place-items-center   h-[26px] grid">
+            <div className=" text-center pt-1 h-[26px] w-[114px] rounded-[14px] bg-[#6588DE] text-[12px] text-white ">
               <Moment format="DD/MM/YYYY">
                 {messages[0]?.data().timestamp?.toDate()}
               </Moment>
@@ -102,6 +104,7 @@ function Chat({ channel, channels }) {
             ></input>
 
             <button
+              disabled={!message.trim() || isLoading}
               type="submit"
               className="text-10px absolute right-0 flex h-full w-[140px] items-center justify-center rounded-xl bg-[#6588DE] text-white"
             >
